@@ -1,12 +1,8 @@
 {
   "name": "A.H.Helwa ERP",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/itsmechlark/features/postgresql:1": {
-      "version": "16"
-    }
-  },
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "forwardPorts": [3000, 5432],
   "portsAttributes": {
     "3000": {
