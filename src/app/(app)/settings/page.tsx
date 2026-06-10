@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { requireSession } from '@/lib/auth';
-import { ROLE_LABELS } from '@/lib/rbac';
+import { can } from '@/lib/rbac';
 import { UserForm } from './UserForm';
+import { UsersList } from './UsersList';
 
 export const dynamic = 'force-dynamic';
 
@@ -90,38 +91,19 @@ export default async function SettingsPage() {
             <div className="border-b border-slate-100 p-4">
               <h3 className="text-lg font-semibold">المستخدمون</h3>
             </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>البريد</th>
-                  <th>الدور</th>
-                  <th>الفرع</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u) => (
-                  <tr key={u.id}>
-                    <td className="font-medium">{u.fullName}</td>
-                    <td>{u.email}</td>
-                    <td>
-                      <span className="badge bg-indigo-50 text-indigo-700">
-                        {ROLE_LABELS[u.role]}
-                      </span>
-                    </td>
-                    <td>{u.branch?.name || '-'}</td>
-                    <td>
-                      {u.isActive ? (
-                        <span className="badge bg-emerald-50 text-emerald-700">نشط</span>
-                      ) : (
-                        <span className="badge bg-slate-100 text-slate-700">معطل</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="p-4">
+              <UsersList
+                users={users.map((u) => ({
+                  id: u.id,
+                  fullName: u.fullName,
+                  email: u.email,
+                  role: u.role,
+                  isActive: u.isActive,
+                  branchName: u.branch?.name || null,
+                }))}
+                canReset={can(session.role, 'users.manage')}
+              />
+            </div>
           </div>
         </div>
 
