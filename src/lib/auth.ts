@@ -78,6 +78,16 @@ export async function loginUser(tenantSlug: string, email: string, password: str
   const ok = await verifyPassword(password, user.passwordHash);
   if (!ok) throw new Error('INVALID_CREDENTIALS');
 
+  const superEmails = (process.env.SUPER_ADMIN_EMAILS || '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  const isSuper = superEmails.includes(user.email.toLowerCase());
+
+  if (!isSuper && (tenant.status === 'PAST_DUE' || tenant.status === 'CANCELED')) {
+    throw new Error('TENANT_SUSPENDED');
+  }
+
   await createSession({
     userId: user.id,
     tenantId: tenant.id,

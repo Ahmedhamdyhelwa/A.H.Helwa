@@ -14,6 +14,7 @@ import {
   Settings,
   LogOut,
   Receipt,
+  Crown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,15 @@ const nav = [
   { href: '/settings', label: 'الإعدادات', icon: Settings },
 ];
 
-export function Sidebar({ tenantName, userName }: { tenantName: string; userName: string }) {
+export function Sidebar({
+  tenantName,
+  userName,
+  showSuperAdmin = false,
+}: {
+  tenantName: string;
+  userName: string;
+  showSuperAdmin?: boolean;
+}) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -69,6 +78,15 @@ export function Sidebar({ tenantName, userName }: { tenantName: string; userName
         })}
       </nav>
       <div className="border-t border-slate-800 p-3">
+        {showSuperAdmin && (
+          <Link
+            href="/admin"
+            className="mb-2 flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 px-3 py-2 text-sm text-white hover:from-purple-600 hover:to-indigo-600"
+          >
+            <Crown className="h-4 w-4" />
+            لوحة المنصة (Super Admin)
+          </Link>
+        )}
         <div className="mb-2 px-2 text-xs text-slate-400">{userName}</div>
         <button
           onClick={logout}

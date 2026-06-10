@@ -25,6 +25,12 @@ export async function POST(req: Request) {
         { status: 401 },
       );
     }
+    if (msg === 'TENANT_SUSPENDED') {
+      return NextResponse.json(
+        { error: 'تم تعليق حساب منشأتك. يرجى التواصل مع الدعم لتجديد الاشتراك.' },
+        { status: 403 },
+      );
+    }
     return NextResponse.json({ error: 'خطأ في الخادم' }, { status: 500 });
   }
 }
