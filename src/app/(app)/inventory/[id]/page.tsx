@@ -1,4 +1,6 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { Pencil } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { requireSession } from '@/lib/auth';
 import { formatCurrency, formatDateTime, toNumber } from '@/lib/utils';
@@ -32,9 +34,15 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">{product.name}</h1>
-        <div className="text-sm text-slate-500">{product.category?.name}</div>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">{product.name}</h1>
+          <div className="text-sm text-slate-500">{product.category?.name}</div>
+        </div>
+        <Link href={`/inventory/${product.id}/edit`} className="btn-secondary">
+          <Pencil className="h-4 w-4" />
+          تعديل الصنف
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

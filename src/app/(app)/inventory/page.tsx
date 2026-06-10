@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireSession } from '@/lib/auth';
 import { formatCurrency, toNumber } from '@/lib/utils';
-import { Plus, AlertTriangle } from 'lucide-react';
+import { Plus, AlertTriangle, Pencil } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,12 +42,13 @@ export default async function InventoryPage() {
               <th>سعر البيع</th>
               <th>الرصيد</th>
               <th>تنبيهات</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {products.length === 0 && (
               <tr>
-                <td colSpan={8} className="py-8 text-center text-slate-400">
+                <td colSpan={9} className="py-8 text-center text-slate-400">
                   لا توجد أصناف. أضف أول صنف.
                 </td>
               </tr>
@@ -87,6 +88,15 @@ export default async function InventoryPage() {
                         </span>
                       )}
                     </div>
+                  </td>
+                  <td>
+                    <Link
+                      href={`/inventory/${p.id}/edit`}
+                      className="inline-flex items-center gap-1 text-brand-600 hover:underline"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      تعديل
+                    </Link>
                   </td>
                 </tr>
               );
